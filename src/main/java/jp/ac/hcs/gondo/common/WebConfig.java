@@ -4,6 +4,9 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.web.firewall.HttpStatusRequestRejectedHandler;
+import org.springframework.security.web.firewall.RequestRejectedHandler;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.client.RestTemplate;
 
@@ -42,8 +45,17 @@ public class WebConfig {
 
 	@Bean
 	public RestTemplate restTemplate() {
-
 		return new RestTemplate();
+	}
+	
+	/**
+	 * 不正なURLでのリクエストで404エラーを返すための設定
+	 * :- https://www.b1a9idps.com/posts/spring-security-invalid-url-request
+	 * @return HttpStatusRequestRejectedHandler
+	 */
+	@Bean
+	public RequestRejectedHandler requestRejectedHandler() {
+		return new HttpStatusRequestRejectedHandler(HttpStatus.NOT_FOUND.value());
 	}
 
 }
