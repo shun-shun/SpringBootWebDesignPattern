@@ -4,10 +4,10 @@ public interface Repository <T> {
 	
 	public T findAll();
 	
-//	public T findById(String id);
-//	
-//	public T findByName();
-//	
+	public T findById(String id);
+	
+	public T findByName(String keyword);
+	
 //	public int save(T t);
 //	
 //	public int modify(T t);

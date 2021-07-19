@@ -13,14 +13,18 @@ import jp.ac.hcs.gondo.domain.model.ReportData;
 @Repository
 public class TopRepository extends RepositoryImpl<ReportEntity>{
 
-	static final String SQL = "SELECT * FROM t_report";
+	private static final String SELECT_ALL_SQL = "SELECT * FROM t_report";
+	
+	private static final String SELECT_BY_ID_SQL = "SELECT * FROM t_report WHERE applyId = ?";
+	
+	private static final String SELECT_BY_LIKE_SQL = "SELECT * FROM t_report WHERE className LIKE ?";
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
 	@Override
 	protected List<Map<String, Object>> selectAll() {
-		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(SQL);
+		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(SELECT_ALL_SQL);
 		return resultSet;
 	}
 
@@ -34,6 +38,19 @@ public class TopRepository extends RepositoryImpl<ReportEntity>{
 			entity.getList().add(data);
 		}
 		return entity;
+	}
+	
+	@Override
+	protected List<Map<String, Object>> selectOne(String id) {
+		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(SELECT_BY_ID_SQL, id);
+		return resultSet;
+	}
+
+	@Override
+	protected List<Map<String, Object>> selectKeyword(String keyword) {
+		keyword = "%" + keyword + "%";
+		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(SELECT_BY_LIKE_SQL, keyword);
+		return resultSet;
 	}
 
 }

@@ -33,5 +33,16 @@ public class TopService extends ServiceImpl<ReportEntity>{
 		return e;
 	}
 
+	@Override
+	protected ReportEntity lookup(String id) {
+		ReportEntity entity = topRepository.findById(id);
+		return entity;
+	}
+
+	@Override
+	protected ReportEntity find(String keyword) {
+		ReportEntity entity = topRepository.findByName(keyword);
+		return entity;
+	}
 
 }

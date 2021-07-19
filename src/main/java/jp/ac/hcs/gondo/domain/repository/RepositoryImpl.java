@@ -15,4 +15,23 @@ abstract class RepositoryImpl<T> implements Repository<T>{
 	protected abstract List<Map<String, Object>> selectAll();
 
 	protected abstract T refillToData(List<Map<String, Object>> resultSet);
+	
+	@Override
+	public T findById(String id) {
+		List<Map<String, Object>> resultSet = selectOne(id);
+		T data = refillToData(resultSet);
+		return data;
+	}
+	
+	protected abstract List<Map<String, Object>> selectOne(String id);
+	
+	
+	@Override
+	public T findByName(String keyword) {
+		List<Map<String, Object>> resultSet = selectKeyword(keyword);
+		T data = refillToData(resultSet);
+		return data;
+	}
+	
+	protected abstract List<Map<String, Object>> selectKeyword(String keyword);
 }
