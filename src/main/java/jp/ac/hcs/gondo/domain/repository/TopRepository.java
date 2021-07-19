@@ -13,7 +13,7 @@ import jp.ac.hcs.gondo.domain.model.ReportEntity;
 @Repository
 public class TopRepository extends RepositoryImpl<ReportEntity>{
 
-	static final String SQL = "SELECT * FROM report";
+	static final String SQL = "SELECT * FROM t_report";
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;

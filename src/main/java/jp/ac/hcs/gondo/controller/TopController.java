@@ -1,4 +1,4 @@
-package jp.ac.hcs.gondo.app.controller;
+package jp.ac.hcs.gondo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
