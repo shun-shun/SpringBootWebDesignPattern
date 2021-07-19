@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import jp.ac.hcs.gondo.domain.entity.ReportEntity;
 import jp.ac.hcs.gondo.domain.model.ReportData;
-import jp.ac.hcs.gondo.domain.model.ReportEntity;
 
 @Repository
 public class TopRepository extends RepositoryImpl<ReportEntity>{

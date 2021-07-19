@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jp.ac.hcs.gondo.domain.model.ReportEntity;
+import jp.ac.hcs.gondo.domain.entity.ReportEntity;
 import jp.ac.hcs.gondo.domain.service.TopService;
 
 @Controller

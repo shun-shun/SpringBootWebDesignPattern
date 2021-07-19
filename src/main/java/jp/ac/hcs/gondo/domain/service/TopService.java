@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jp.ac.hcs.gondo.domain.entity.ReportEntity;
 import jp.ac.hcs.gondo.domain.model.ReportData;
-import jp.ac.hcs.gondo.domain.model.ReportEntity;
 import jp.ac.hcs.gondo.domain.repository.TopRepository;
 
 @Transactional
