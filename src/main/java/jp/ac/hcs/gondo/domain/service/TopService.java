@@ -34,8 +34,14 @@ public class TopService extends ServiceImpl<TodoEntity>{
 	}
 
 	@Override
-	protected TodoEntity lookup(String id) {
+	protected TodoEntity lookup(int id) {
 		TodoEntity entity = topRepository.findById(id);
+		return entity;
+	}
+	
+	@Override
+	protected TodoEntity lookup(String userId) {
+		TodoEntity entity = topRepository.findByUserId(userId);
 		return entity;
 	}
 

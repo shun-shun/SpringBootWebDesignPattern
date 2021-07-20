@@ -4,9 +4,11 @@ public interface Repository <T> {
 	
 	public T findAll();
 	
-	public T findById(String id);
+	public T findById(int id);
 	
 	public T findByName(String keyword);
+	
+	public T findByUserId(String userId);
 	
 //	public int save(T t);
 //	

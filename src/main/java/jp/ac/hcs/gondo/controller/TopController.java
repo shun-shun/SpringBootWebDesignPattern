@@ -1,5 +1,7 @@
 package jp.ac.hcs.gondo.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,8 +18,8 @@ public class TopController {
 	TopService topService;
 
 	@RequestMapping("/")
-	public String index(Model model) {
-		TodoEntity todoEntity = topService.getList();
+	public String index(Principal principal, Model model) {
+		TodoEntity todoEntity = topService.select(principal.getName());
 		model.addAttribute("todoEntity", todoEntity);
 		return "index";
 	}

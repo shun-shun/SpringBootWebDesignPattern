@@ -15,5 +15,9 @@ CREATE TABLE IF NOT EXISTS m_user (
 /* タスクテーブル */
 CREATE TABLE IF NOT EXISTS t_report (
   id INT PRIMARY KEY,
-  title VARCHAR(50)
+  title VARCHAR(50),
+  priority int,
+  contents VARCHAR(1000),
+  user_id VARCHAR(50),
+  create_date timestamp
 );

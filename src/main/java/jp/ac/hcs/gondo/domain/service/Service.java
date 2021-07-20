@@ -5,8 +5,11 @@ public interface Service <T> {
 	/** 一覧 */
 	T getList();
 
-	/** 取得 */
-	T select(String id);
+	/** 取得(ID) */
+	T select(int id);
+	
+	/** 取得(ユーザID) */
+	T select(String user_id);
 	
 	/** 検索 */
 	T search(String keyword);

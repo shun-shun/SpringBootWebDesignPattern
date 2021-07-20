@@ -16,14 +16,25 @@ abstract class ServiceImpl<T> implements Service<T>{
 	protected abstract T encode(T t);
 
 	@Override
-	public T select(String id) {
+	public T select(int id) {
 		T t = lookup(id);
 		t = encode(t);
 		return t;
 	}
 	
 	/** IDでの検索 */
-	protected abstract T lookup(String id);
+	protected abstract T lookup(int id);
+	
+	@Override
+	public T select(String userId) {
+		T t = lookup(userId);
+		t = encode(t);
+		return t;
+	}
+	
+	
+	/** ユーザIDでの検索 */
+	protected abstract T lookup(String userId);
 	
 	@Override
 	public T search(String keyword) {

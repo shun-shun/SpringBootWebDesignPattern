@@ -17,13 +17,13 @@ abstract class RepositoryImpl<T> implements Repository<T>{
 	protected abstract T refillToData(List<Map<String, Object>> resultSet);
 	
 	@Override
-	public T findById(String id) {
+	public T findById(int id) {
 		List<Map<String, Object>> resultSet = selectOne(id);
 		T data = refillToData(resultSet);
 		return data;
 	}
 	
-	protected abstract List<Map<String, Object>> selectOne(String id);
+	protected abstract List<Map<String, Object>> selectOne(int id);
 	
 	
 	@Override
@@ -34,4 +34,13 @@ abstract class RepositoryImpl<T> implements Repository<T>{
 	}
 	
 	protected abstract List<Map<String, Object>> selectKeyword(String keyword);
+	
+	@Override
+	public T findByUserId(String userId) {
+		List<Map<String, Object>> resultSet = selectUserId(userId);
+		T data = refillToData(resultSet);
+		return data;
+	}
+	
+	protected abstract List<Map<String, Object>> selectUserId(String userId);
 }
