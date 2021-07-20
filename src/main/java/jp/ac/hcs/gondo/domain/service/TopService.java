@@ -6,42 +6,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import jp.ac.hcs.gondo.domain.entity.ReportEntity;
-import jp.ac.hcs.gondo.domain.model.ReportData;
+import jp.ac.hcs.gondo.domain.entity.TodoEntity;
+import jp.ac.hcs.gondo.domain.model.TodoData;
 import jp.ac.hcs.gondo.domain.repository.TopRepository;
 
 @Transactional
 @Service
-public class TopService extends ServiceImpl<ReportEntity>{
+public class TopService extends ServiceImpl<TodoEntity>{
 
 	@Autowired
 	TopRepository topRepository;
 
 	@Override
-	protected ReportEntity fetch() {
-		ReportEntity entity = topRepository.findAll();
+	protected TodoEntity fetch() {
+		TodoEntity entity = topRepository.findAll();
 		return entity;
 	}
 
 	@Override
-	protected ReportEntity encode(ReportEntity e) {
-		List<ReportData> list = e.getList();
+	protected TodoEntity encode(TodoEntity e) {
+		List<TodoData> list = e.getList();
 		list.forEach( d -> {
-			int applyId = d.getApplyId();
-			String userName = d.getClassName();
+			int applyId = d.getId();
+			String title = d.getTitle();
 		});
 		return e;
 	}
 
 	@Override
-	protected ReportEntity lookup(String id) {
-		ReportEntity entity = topRepository.findById(id);
+	protected TodoEntity lookup(String id) {
+		TodoEntity entity = topRepository.findById(id);
 		return entity;
 	}
 
 	@Override
-	protected ReportEntity find(String keyword) {
-		ReportEntity entity = topRepository.findByName(keyword);
+	protected TodoEntity find(String keyword) {
+		TodoEntity entity = topRepository.findByName(keyword);
 		return entity;
 	}
 

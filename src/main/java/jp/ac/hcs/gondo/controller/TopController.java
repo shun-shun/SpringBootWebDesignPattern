@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jp.ac.hcs.gondo.domain.entity.ReportEntity;
+import jp.ac.hcs.gondo.domain.entity.TodoEntity;
 import jp.ac.hcs.gondo.domain.service.TopService;
 
 @Controller
@@ -17,22 +17,22 @@ public class TopController {
 
 	@RequestMapping("/")
 	public String index(Model model) {
-		ReportEntity reportEntity = topService.getList();
-		model.addAttribute("reportEntity", reportEntity);
+		TodoEntity todoEntity = topService.getList();
+		model.addAttribute("todoEntity", todoEntity);
 		return "index";
 	}
 	
 	@RequestMapping("/search")
 	public String search(@RequestParam("keyword") String keyword, Model model) {
-		ReportEntity reportEntity = topService.search(keyword);
-		model.addAttribute("reportEntity", reportEntity);
+		TodoEntity todoEntity = topService.search(keyword);
+		model.addAttribute("todoEntity", todoEntity);
 		return "index";
 	}
 	
 	@RequestMapping("/lookup")
 	public String lookup(@RequestParam("id") String id, Model model) {
-		ReportEntity reportEntity = topService.select(id);
-		model.addAttribute("reportEntity", reportEntity);
+		TodoEntity todoEntity = topService.select(id);
+		model.addAttribute("todoEntity", todoEntity);
 		return "index";
 	}
 }

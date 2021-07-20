@@ -14,6 +14,6 @@ CREATE TABLE IF NOT EXISTS m_user (
 
 /* タスクテーブル */
 CREATE TABLE IF NOT EXISTS t_report (
-  applyId INT PRIMARY KEY,
-  className VARCHAR(50)
+  id INT PRIMARY KEY,
+  title VARCHAR(50)
 );

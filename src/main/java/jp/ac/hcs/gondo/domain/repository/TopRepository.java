@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import jp.ac.hcs.gondo.domain.entity.ReportEntity;
-import jp.ac.hcs.gondo.domain.model.ReportData;
+import jp.ac.hcs.gondo.domain.entity.TodoEntity;
+import jp.ac.hcs.gondo.domain.model.TodoData;
 
 @Repository
-public class TopRepository extends RepositoryImpl<ReportEntity>{
+public class TopRepository extends RepositoryImpl<TodoEntity>{
 
 	private static final String SELECT_ALL_SQL = "SELECT * FROM t_report";
 	
@@ -29,12 +29,12 @@ public class TopRepository extends RepositoryImpl<ReportEntity>{
 	}
 
 	@Override
-	protected ReportEntity refillToData(List<Map<String, Object>> resultSet) {
-		ReportEntity entity = new ReportEntity();
+	protected TodoEntity refillToData(List<Map<String, Object>> resultSet) {
+		TodoEntity entity = new TodoEntity();
 		for(Map<String, Object> m : resultSet ) {
-			ReportData data = new ReportData();
-			data.setApplyId((int) m.get("applyId"));
-			data.setClassName((String) m.get("className"));
+			TodoData data = new TodoData();
+			data.setId((int) m.get("id"));
+			data.setTitle((String) m.get("title"));
 			entity.getList().add(data);
 		}
 		return entity;

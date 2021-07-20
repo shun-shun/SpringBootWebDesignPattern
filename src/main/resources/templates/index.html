@@ -73,7 +73,7 @@
 
 			<div class="col-sm-12">
 				<div class="content-box">
-					<h2>一覧</h2>
+					<h2>TODOリスト</h2>
 					<form method="get" th:action="@{/search}">
 						<div class="input-group">
 							<input type="text" class="form-control" name="keyword"
@@ -86,13 +86,13 @@
 						<thead>
 							<tr>
 								<th scope="col">ID</th>
-								<th scope="col">クラス</th>
+								<th scope="col">タイトル</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="report : ${reportEntity.list}">
-								<td th:text="${report.applyId}">1</td>
-								<td th:text="${report.className}">@mdo</td>
+							<tr th:each="todo : ${todoEntity.list}">
+								<td th:text="${todo.id}">1</td>
+								<td th:text="${todo.title}">@mdo</td>
 							</tr>
 						</tbody>
 					</table>
