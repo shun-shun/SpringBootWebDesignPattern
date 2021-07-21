@@ -19,5 +19,6 @@ CREATE TABLE IF NOT EXISTS t_report (
   priority int,
   contents VARCHAR(1000),
   user_id VARCHAR(50),
-  create_date timestamp
+  create_date timestamp,
+  update_date timestamp
 );
