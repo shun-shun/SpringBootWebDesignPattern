@@ -6,13 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import jp.ac.hcs.gondo.controller.form.TodoForm;
 import jp.ac.hcs.gondo.domain.entity.TodoEntity;
 import jp.ac.hcs.gondo.domain.model.TodoData;
 import jp.ac.hcs.gondo.domain.repository.TopRepository;
 
 @Transactional
 @Service
-public class TopService extends ServiceImpl<TodoData, TodoEntity,>{
+public class TopService extends ServiceImpl<TodoData, TodoEntity, TodoForm>{
 
 	@Autowired
 	TopRepository topRepository;
@@ -49,6 +50,22 @@ public class TopService extends ServiceImpl<TodoData, TodoEntity,>{
 	protected TodoEntity find(String keyword) {
 		TodoEntity entity = topRepository.findByName(keyword);
 		return entity;
+	}
+	
+	@Override
+	protected TodoData refillToData(TodoForm f) {
+		TodoData data = new TodoData();
+		data.setTitle(f.getTitle());
+		data.setPriority(f.getPriority());
+		data.setContents(f.getContents());
+		data.setUser_id(f.getContents());
+		return data;
+	}
+	
+	@Override
+	protected int add(TodoData d) {
+		int count = topRepository.save(d);
+		return count;
 	}
 
 }

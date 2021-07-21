@@ -47,10 +47,15 @@ abstract class ServiceImpl<D,E,F> implements Service<D,E,F>{
 	protected abstract E find(String keyword);
 	
 	@Override
-	public int create(D d) {
-		// TODO 自動生成されたメソッド・スタブ
-		return 0;
+	public int create(F f) {
+		D d = refillToData(f);
+		int count = add(d);
+		return count;
 	}
+	
+	protected abstract D refillToData(F f);
+	
+	protected abstract int add(D d);
 	
 	
 }

@@ -15,7 +15,7 @@ public interface Service <D,E,F> {
 	E search(String keyword);
 
 	/** 登録 */
-	int create(D d);
+	int create(F f);
 
 	/** 更新 */
 //	int update(T t);
