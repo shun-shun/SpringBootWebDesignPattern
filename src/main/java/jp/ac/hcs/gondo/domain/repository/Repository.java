@@ -2,15 +2,39 @@ package jp.ac.hcs.gondo.domain.repository;
 
 public interface Repository <T> {
 	
+	/**
+	 * 全件検索
+	 * @return 指定パラメータ型
+	 */
 	public T findAll();
 	
+	/**
+	 * ID検索
+	 * @param id Int型
+	 * @return 指定パラメータ型
+	 */
 	public T findById(int id);
 	
+	/**
+	 * キーワード検索
+	 * @param keyword String型
+	 * @return 指定パラメータ型
+	 */
 	public T findByName(String keyword);
 	
+	/**
+	 * ユーザID検索
+	 * @param userId String型
+	 * @return 指定パラメータ型
+	 */
 	public T findByUserId(String userId);
 	
-//	public int save(T t);
+	/**
+	 * 作成
+	 * @param t 指定パラメータ型
+	 * @return 作成件数
+	 */
+	public int save(T t);
 //	
 //	public int modify(T t);
 //	

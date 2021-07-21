@@ -12,7 +12,7 @@ import jp.ac.hcs.gondo.domain.repository.TopRepository;
 
 @Transactional
 @Service
-public class TopService extends ServiceImpl<TodoEntity>{
+public class TopService extends ServiceImpl<TodoData, TodoEntity,>{
 
 	@Autowired
 	TopRepository topRepository;

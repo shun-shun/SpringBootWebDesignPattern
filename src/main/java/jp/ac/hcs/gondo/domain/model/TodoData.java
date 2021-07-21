@@ -23,6 +23,9 @@ public class TodoData {
 	// ユーザID
 	private String user_id;
 	
-	// タイムスタンプ
+	// 作成日付
 	private Timestamp create_date;
+	
+	// 更新日付
+	private Timestamp update_date;
 }

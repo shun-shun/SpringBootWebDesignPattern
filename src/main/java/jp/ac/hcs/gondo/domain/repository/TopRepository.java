@@ -23,6 +23,8 @@ public class TopRepository extends RepositoryImpl<TodoEntity>{
 
 	private static final String SELECT_BY_USER_ID_SQL = "SELECT * FROM t_report WHERE user_id = ?";
 
+	private static final String INSERT_SQL = "INSERT INTO t_report (id, title, priority, contents, user_id, create_date, update_date) VALUES (SELECT id FROM t_report) + 1, ?, ?, ?, ?, ?, ?)";
+	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
@@ -65,6 +67,21 @@ public class TopRepository extends RepositoryImpl<TodoEntity>{
 	protected List<Map<String, Object>> selectUserId(String userId) {
 		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(SELECT_BY_USER_ID_SQL, userId);
 		return resultSet;
+	}
+
+	@Override
+	protected int create(TodoEntity t) {
+		int count = 0;
+		for(TodoData d : t.getList()) {
+			count += jdbcTemplate.update(INSERT_SQL,
+					d.getTitle(),
+					d.getPriority(),
+					d.getContents(),
+					d.getUser_id(),
+					d.getCreate_date(),
+					d.getUpdate_date());
+		}
+		return count;
 	}
 
 }

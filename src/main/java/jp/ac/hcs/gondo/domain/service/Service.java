@@ -1,21 +1,21 @@
 package jp.ac.hcs.gondo.domain.service;
 
-public interface Service <T> {
+public interface Service <D,E,F> {
 
 	/** 一覧 */
-	T getList();
+	E getList();
 
 	/** 取得(ID) */
-	T select(int id);
+	E select(int id);
 	
 	/** 取得(ユーザID) */
-	T select(String user_id);
+	E select(String user_id);
 	
 	/** 検索 */
-	T search(String keyword);
+	E search(String keyword);
 
 	/** 登録 */
-//	int create(T t);
+	int create(D d);
 
 	/** 更新 */
 //	int update(T t);

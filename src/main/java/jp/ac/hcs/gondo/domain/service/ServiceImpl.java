@@ -1,48 +1,56 @@
 package jp.ac.hcs.gondo.domain.service;
 
-abstract class ServiceImpl<T> implements Service<T>{
+abstract class ServiceImpl<D,E,F> implements Service<D,E,F>{
 
 	@Override
-	public T getList() {
-		T t = fetch();
-		t = encode(t);
-		return t;
+	public E getList() {
+		E e = fetch();
+		e = encode(e);
+		return e;
 	}
 
 	/** データの取得 */
-	protected abstract T fetch();
+	protected abstract E fetch();
 
 	/** 画面表示のためのエンコード */
-	protected abstract T encode(T t);
+	protected abstract E encode(E e);
 
 	@Override
-	public T select(int id) {
-		T t = lookup(id);
-		t = encode(t);
-		return t;
+	public E select(int id) {
+		E e = lookup(id);
+		e = encode(e);
+		return e;
 	}
 	
 	/** IDでの検索 */
-	protected abstract T lookup(int id);
+	protected abstract E lookup(int id);
 	
 	@Override
-	public T select(String userId) {
-		T t = lookup(userId);
-		t = encode(t);
-		return t;
+	public E select(String userId) {
+		E e = lookup(userId);
+		e = encode(e);
+		return e;
 	}
 	
 	
 	/** ユーザIDでの検索 */
-	protected abstract T lookup(String userId);
+	protected abstract E lookup(String userId);
 	
 	@Override
-	public T search(String keyword) {
-		T t = find(keyword);
-		t = encode(t);
-		return t;
+	public E search(String keyword) {
+		E e = find(keyword);
+		e = encode(e);
+		return e;
 	}
 	
 	/** キーワードでの検索 */
-	protected abstract T find(String keyword);
+	protected abstract E find(String keyword);
+	
+	@Override
+	public int create(D d) {
+		// TODO 自動生成されたメソッド・スタブ
+		return 0;
+	}
+	
+	
 }

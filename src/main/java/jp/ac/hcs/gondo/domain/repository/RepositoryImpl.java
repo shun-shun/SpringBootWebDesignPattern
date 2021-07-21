@@ -5,6 +5,9 @@ import java.util.Map;
 
 abstract class RepositoryImpl<T> implements Repository<T>{
 
+	/**
+	 * @inheritDoc
+	 */
 	@Override
 	public T findAll() {
 		List<Map<String, Object>> resultSet = selectAll();
@@ -16,6 +19,9 @@ abstract class RepositoryImpl<T> implements Repository<T>{
 
 	protected abstract T refillToData(List<Map<String, Object>> resultSet);
 	
+	/**
+	 * @inheritDoc
+	 */
 	@Override
 	public T findById(int id) {
 		List<Map<String, Object>> resultSet = selectOne(id);
@@ -25,7 +31,9 @@ abstract class RepositoryImpl<T> implements Repository<T>{
 	
 	protected abstract List<Map<String, Object>> selectOne(int id);
 	
-	
+	/**
+	 * @inheritDoc
+	 */
 	@Override
 	public T findByName(String keyword) {
 		List<Map<String, Object>> resultSet = selectKeyword(keyword);
@@ -35,6 +43,9 @@ abstract class RepositoryImpl<T> implements Repository<T>{
 	
 	protected abstract List<Map<String, Object>> selectKeyword(String keyword);
 	
+	/**
+	 * @inheritDoc
+	 */
 	@Override
 	public T findByUserId(String userId) {
 		List<Map<String, Object>> resultSet = selectUserId(userId);
@@ -43,4 +54,15 @@ abstract class RepositoryImpl<T> implements Repository<T>{
 	}
 	
 	protected abstract List<Map<String, Object>> selectUserId(String userId);
+	
+	/**
+	 * @inheritDoc
+	 */
+	@Override
+	public int save(T t) {
+		int count = create(t);
+		return 0;
+	}
+	
+	protected abstract int create(T t);
 }
