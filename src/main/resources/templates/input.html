@@ -74,43 +74,36 @@
 			<div class="col-sm-12">
 				<div class="content-box">
 					<h2>TODOリスト</h2>
-					<form method="get" th:action="@{/search}">
-						<div class="input-group">
-							<input type="text" class="form-control" name="keyword"
-								placeholder="キーワード"> <span class="input-group-btn">
-								<button type="submit" class="btn btn-info">検索</button>
-							</span>
+					<form method="post" th:action="@{/create}" th:object="${todoForm}">
+						<div class="row">
+							<div class="col-md-10 mb-3">
+								<label for="title">タイトル <span class="text-muted">※</span></label>
+								<input type="text" class="form-control" id="title" name="title"
+									placeholder="今日のTODO"
+									th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'" required>
+								<span class="text-danger" th:if="${#fields.hasErrors('title')}"
+									th:errors="*{title}">title error</span>
+							</div>
+							<div class="col-md-2 mb-3">
+								<label for="priority">優先度<span class="text-muted">※</span></label>
+								<select class="form-control" name="priority"
+									th:classappend="${#fields.hasErrors('priority')} ? 'is-invalid'" required>
+									<option th:each="priority : ${priorityList}"
+										th:value="${priority.name}" th:text="${priority.value}">
+									</option>
+								</select> <span class="text-danger"
+									th:if="${#fields.hasErrors('priority')}"
+									th:errors="*{priority}">priority error</span>
+							</div>
 						</div>
-					</form>
-					<br>
-					<table class="table">
-						<thead>
-							<tr class="table-primary">
-								<th scope="col">ID</th>
-								<th scope="col">タイトル</th>
-								<th scope="col">重要度</th>
-								<th scope="col">内容</th>
-								<th scope="col"></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr class="table-light" th:each="todo : ${todoEntity.list}">
-								<td th:text="${todo.id}">1</td>
-								<td th:text="${todo.title}">@mdo</td>
-								<td th:text="${todo.priority.value}">@mdo</td>
-								<td th:text="${todo.contents}">@mdo</td>
-								<td>
-									<form method="get" th:action="@{/lookup}">
-										<input type="hidden" class="form-control" name="id"
-											th:value="${todo.id}"> <span class="input-group-btn">
-											<button type="submit" class="btn btn-info">詳細</button>
-										</span>
-									</form>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-					<form method="get" th:action="@{/create}">
+						<div class="mb-3">
+							<label for="contents">内容<span class="text-muted">※</span></label>
+							<textarea class="form-control" id="contents" name="contents"
+								rows="5"
+								th:classappend="${#fields.hasErrors('contents')} ? 'is-invalid'" required></textarea>
+							<span class="text-danger" th:if="${#fields.hasErrors('contents')}"
+								th:errors="*{contents}">contents error</span>
+						</div>
 						<div class="input-group">
 							<button type="submit" class="btn btn-warning">作成</button>
 						</div>

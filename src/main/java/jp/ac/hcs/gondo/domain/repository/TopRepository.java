@@ -17,13 +17,13 @@ public class TopRepository extends RepositoryImpl<TodoData, TodoEntity> {
 
 	private static final String SELECT_ALL_SQL = "SELECT * FROM t_report";
 
-	private static final String SELECT_BY_ID_SQL = "SELECT * FROM t_report WHERE applyId = ?";
+	private static final String SELECT_BY_ID_SQL = "SELECT * FROM t_report WHERE id = ?";
 
-	private static final String SELECT_BY_LIKE_SQL = "SELECT * FROM t_report WHERE className LIKE ?";
+	private static final String SELECT_BY_LIKE_SQL = "SELECT * FROM t_report WHERE title LIKE ? or contents LIKE ?";
 
 	private static final String SELECT_BY_USER_ID_SQL = "SELECT * FROM t_report WHERE user_id = ?";
 
-	private static final String INSERT_SQL = "INSERT INTO t_report (id, title, priority, contents, user_id, create_date, update_date) VALUES (SELECT id FROM t_report) + 1, ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT_SQL = "INSERT INTO t_report (id, title, priority, contents, user_id, create_date, update_date) VALUES ((SELECT MAX(id) + 1 FROM t_report), ?, ?, ?, ?, ?, ?)";
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
@@ -59,7 +59,7 @@ public class TopRepository extends RepositoryImpl<TodoData, TodoEntity> {
 	@Override
 	protected List<Map<String, Object>> selectKeyword(String keyword) {
 		keyword = "%" + keyword + "%";
-		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(SELECT_BY_LIKE_SQL, keyword);
+		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(SELECT_BY_LIKE_SQL, keyword, keyword);
 		return resultSet;
 	}
 
@@ -73,7 +73,7 @@ public class TopRepository extends RepositoryImpl<TodoData, TodoEntity> {
 	protected int create(TodoData d) {
 		int count = jdbcTemplate.update(INSERT_SQL,
 				d.getTitle(),
-				d.getPriority(),
+				d.getPriority().getId(),
 				d.getContents(),
 				d.getUser_id(),
 				d.getCreate_date(),

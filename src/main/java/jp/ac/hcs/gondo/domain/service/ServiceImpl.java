@@ -21,41 +21,42 @@ abstract class ServiceImpl<D,E,F> implements Service<D,E,F>{
 		e = encode(e);
 		return e;
 	}
-	
+
 	/** IDでの検索 */
 	protected abstract E lookup(int id);
-	
+
 	@Override
 	public E select(String userId) {
 		E e = lookup(userId);
 		e = encode(e);
 		return e;
 	}
-	
-	
+
+
 	/** ユーザIDでの検索 */
 	protected abstract E lookup(String userId);
-	
+
 	@Override
 	public E search(String keyword) {
 		E e = find(keyword);
 		e = encode(e);
 		return e;
 	}
-	
+
 	/** キーワードでの検索 */
 	protected abstract E find(String keyword);
-	
+
 	@Override
-	public int create(F f) {
-		D d = refillToData(f);
+	public int create(F f, String userId) {
+		D d = refillToData(f, userId);
+		createProcessing(d);
 		int count = add(d);
 		return count;
 	}
-	
-	protected abstract D refillToData(F f);
-	
+
+	protected abstract D refillToData(F f, String userId);
+
 	protected abstract int add(D d);
-	
-	
+
+	protected abstract void createProcessing(D d);
 }

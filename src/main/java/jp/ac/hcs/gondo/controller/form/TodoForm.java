@@ -1,7 +1,9 @@
 package jp.ac.hcs.gondo.controller.form;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 
 import jp.ac.hcs.gondo.common.Priority;
 import lombok.Data;
@@ -10,17 +12,14 @@ import lombok.Data;
 public class TodoForm {
 
 	@NotNull
-	@NotEmpty
+	@NotBlank
+	@Length(min = 1, max = 50)
 	private String title;
-	
+
 	private Priority priority;
-	
+
 	@NotNull
-	@NotEmpty
+	@NotBlank
+	@Length(min = 1, max = 1000)
 	private String contents;
-	
-	@NotNull
-	@NotEmpty
-	private String user_id;
-	
 }

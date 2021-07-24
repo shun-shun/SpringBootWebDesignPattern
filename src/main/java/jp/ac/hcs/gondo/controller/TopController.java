@@ -5,53 +5,71 @@ import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jp.ac.hcs.gondo.common.Priority;
 import jp.ac.hcs.gondo.controller.form.TodoForm;
 import jp.ac.hcs.gondo.domain.entity.TodoEntity;
-import jp.ac.hcs.gondo.domain.service.TopService;
+import jp.ac.hcs.gondo.domain.model.TodoData;
+import jp.ac.hcs.gondo.domain.service.Service;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 public class TopController {
 
 	@Autowired
-	TopService topService;
+	private Service<TodoData, TodoEntity, TodoForm> service;
 
 	@RequestMapping("/")
 	public String index(Principal principal, Model model) {
-		TodoEntity todoEntity = topService.select(principal.getName());
+		TodoEntity todoEntity = service.select(principal.getName());
+		log.info("[ユーザID]:" + principal.getName() + " データ: " + todoEntity);
 		model.addAttribute("todoEntity", todoEntity);
 		return "index";
 	}
 
 	@RequestMapping("/search")
-	public String search(@RequestParam("keyword") String keyword, Model model) {
-		TodoEntity todoEntity = topService.search(keyword);
+	public String search(@RequestParam("keyword") String keyword, Principal principal,Model model) {
+		if (keyword == null || keyword.isBlank()) {
+			return index(principal, model);
+		}
+		TodoEntity todoEntity = service.search(keyword);
+		log.info("[ユーザID]:" + principal.getName() + " データ: " + todoEntity);
 		model.addAttribute("todoEntity", todoEntity);
 		return "index";
 	}
 
 	@RequestMapping("/lookup")
-	public String lookup(@RequestParam("id") String id, Model model) {
-		TodoEntity todoEntity = topService.select(id);
+	public String lookup(@RequestParam("id") String id, Principal principal,Model model) {
+		TodoEntity todoEntity = service.select(id);
+		log.info("[ユーザID]:" + principal.getName() + " データ: " + todoEntity);
 		model.addAttribute("todoEntity", todoEntity);
 		return "index";
 	}
 
-	public String input(@ModelAttribute TodoForm form, Model model) {
+	@RequestMapping(path = "/create", method = RequestMethod.GET)
+	public String input(@ModelAttribute TodoForm form, Principal principal,Model model) {
+		log.info("[ユーザID]:" + principal.getName());
+		model.addAttribute("priorityList", Priority.values());
 		return "input";
 	}
 
 	@RequestMapping(path = "/create", method = RequestMethod.POST)
-	public String create(@ModelAttribute @Validated TodoForm form, Model model) {
-		int count = topService.create(form);
-		if (count > 0) {
-			return "index";
+	public String create(@ModelAttribute @Validated TodoForm form, BindingResult bindingResult, Principal principal,
+			Model model) {
+		if (bindingResult.hasErrors()) {
+			return input(form, principal, model);
 		}
-		return input(form, model);
+		int count = service.create(form, principal.getName());
+		if (count > 0) {
+			return index(principal, model);
+		}
+		return input(form, principal, model);
 	}
 }
