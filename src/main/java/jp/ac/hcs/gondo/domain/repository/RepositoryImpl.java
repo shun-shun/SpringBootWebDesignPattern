@@ -25,13 +25,13 @@ abstract class RepositoryImpl<D,E> implements Repository<D,E>{
 	 * @inheritDoc
 	 */
 	@Override
-	public E findById(int id) throws DataAccessException{
-		List<Map<String, Object>> resultSet = selectOne(id);
+	public E findById(int id, String userId) throws DataAccessException{
+		List<Map<String, Object>> resultSet = selectOne(id, userId);
 		E data = refillToData(resultSet);
 		return data;
 	}
 
-	protected abstract List<Map<String, Object>> selectOne(int id);
+	protected abstract List<Map<String, Object>> selectOne(int id, String userId);
 
 	/**
 	 * @inheritDoc

@@ -1,5 +1,6 @@
 package jp.ac.hcs.gondo.common;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,7 +48,7 @@ public class WebConfig {
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
-	
+
 	/**
 	 * 不正なURLでのリクエストで404エラーを返すための設定
 	 * :- https://www.b1a9idps.com/posts/spring-security-invalid-url-request
@@ -56,6 +57,11 @@ public class WebConfig {
 	@Bean
 	public RequestRejectedHandler requestRejectedHandler() {
 		return new HttpStatusRequestRejectedHandler(HttpStatus.NOT_FOUND.value());
+	}
+
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
 	}
 
 }

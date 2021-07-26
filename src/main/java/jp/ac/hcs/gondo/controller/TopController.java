@@ -2,6 +2,9 @@ package jp.ac.hcs.gondo.controller;
 
 import java.security.Principal;
 
+import javax.validation.constraints.Pattern;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +27,10 @@ import lombok.extern.slf4j.Slf4j;
 public class TopController {
 
 	@Autowired
-	private Service<TodoData, TodoEntity, TodoForm> service;
+	private ModelMapper modelMapper;
+
+	@Autowired
+	private Service<TodoData, TodoEntity> service;
 
 	@RequestMapping("/")
 	public String index(Principal principal, Model model) {
@@ -35,7 +41,7 @@ public class TopController {
 	}
 
 	@RequestMapping("/search")
-	public String search(@RequestParam("keyword") String keyword, Principal principal,Model model) {
+	public String search(@RequestParam("keyword") String keyword, Principal principal, Model model) {
 		if (keyword == null || keyword.isBlank()) {
 			return index(principal, model);
 		}
@@ -46,7 +52,7 @@ public class TopController {
 	}
 
 	@RequestMapping("/lookup")
-	public String lookup(@RequestParam("id") String id, Principal principal,Model model) {
+	public String lookup(@RequestParam("id") String id, Principal principal, Model model) {
 		TodoEntity todoEntity = service.select(id);
 		log.info("[ユーザID]:" + principal.getName() + " データ: " + todoEntity);
 		model.addAttribute("todoEntity", todoEntity);
@@ -54,7 +60,7 @@ public class TopController {
 	}
 
 	@RequestMapping(path = "/create", method = RequestMethod.GET)
-	public String input(@ModelAttribute TodoForm form, Principal principal,Model model) {
+	public String input(@ModelAttribute TodoForm form, Principal principal, Model model) {
 		log.info("[ユーザID]:" + principal.getName());
 		model.addAttribute("priorityList", Priority.values());
 		return "input";
@@ -66,10 +72,20 @@ public class TopController {
 		if (bindingResult.hasErrors()) {
 			return input(form, principal, model);
 		}
-		int count = service.create(form, principal.getName());
+		TodoData todoData = modelMapper.map(form, TodoData.class);
+		int count = service.create(todoData, principal.getName());
 		if (count > 0) {
 			return index(principal, model);
 		}
 		return input(form, principal, model);
+	}
+
+	@RequestMapping(path = "/detail", method = RequestMethod.GET)
+	public String detail(@RequestParam("id") @Validated @Pattern(regexp = "^[0-9]+$") String id, Principal principal,
+			Model model) {
+		log.info("[ユーザID]:" + principal.getName());
+		TodoData todoData = service.select(id, principal.getName());
+		model.addAttribute("todoData", todoData);
+		return "detail";
 	}
 }

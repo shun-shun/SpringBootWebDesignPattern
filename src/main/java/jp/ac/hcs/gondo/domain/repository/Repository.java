@@ -15,7 +15,7 @@ public interface Repository <D,E> {
 	 * @param id Int型
 	 * @return 指定パラメータ型
 	 */
-	public E findById(int id) throws DataAccessException;
+	public E findById(int id, String userId) throws DataAccessException;
 
 	/**
 	 * キーワード検索

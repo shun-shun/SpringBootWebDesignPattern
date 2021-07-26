@@ -7,14 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import jp.ac.hcs.gondo.controller.form.TodoForm;
 import jp.ac.hcs.gondo.domain.entity.TodoEntity;
 import jp.ac.hcs.gondo.domain.model.TodoData;
 import jp.ac.hcs.gondo.domain.repository.Repository;
 
 @Transactional
 @Service
-public class TopService extends ServiceImpl<TodoData, TodoEntity, TodoForm>{
+public class TopService extends ServiceImpl<TodoData, TodoEntity> {
 
 	@Autowired
 	private Repository<TodoData, TodoEntity> repository;
@@ -26,19 +25,28 @@ public class TopService extends ServiceImpl<TodoData, TodoEntity, TodoForm>{
 	}
 
 	@Override
-	protected TodoEntity encode(TodoEntity e) {
+	protected void entityDecode(TodoEntity e) {
 		List<TodoData> list = e.getList();
-		list.forEach( d -> {
-			int applyId = d.getId();
-			String title = d.getTitle();
-		});
-		return e;
+		for (TodoData d : list) {
+			dataDecode(d);
+		}
 	}
 
 	@Override
-	protected TodoEntity lookup(int id) {
-		TodoEntity entity = repository.findById(id);
-		return entity;
+	protected void dataDecode(TodoData d) {
+		int applyId = d.getId();
+		String title = d.getTitle();
+	}
+
+	@Override
+	protected TodoData lookup(int id, String userId) {
+		TodoEntity entity = repository.findById(id, userId);
+		if (entity.getList().size() < 1) {
+			TodoData data = null;
+			return data;
+		}
+		TodoData data = entity.getList().get(0);
+		return data;
 	}
 
 	@Override
@@ -54,16 +62,6 @@ public class TopService extends ServiceImpl<TodoData, TodoEntity, TodoForm>{
 	}
 
 	@Override
-	protected TodoData refillToData(TodoForm f, String userId) {
-		TodoData data = new TodoData();
-		data.setTitle(f.getTitle());
-		data.setPriority(f.getPriority());
-		data.setContents(f.getContents());
-		data.setUser_id(userId);
-		return data;
-	}
-
-	@Override
 	protected int add(TodoData d) {
 		int count = repository.save(d);
 		return count;
@@ -72,6 +70,14 @@ public class TopService extends ServiceImpl<TodoData, TodoEntity, TodoForm>{
 	@Override
 	protected void createProcessing(TodoData d) {
 		d.setCreate_date(new Timestamp(System.currentTimeMillis()));
+	}
+
+	@Override
+	protected void dataEncode(TodoData d, String userId) {
+		d.setUser_id(userId);
+		Timestamp now = new Timestamp(System.currentTimeMillis());
+		d.setUpdate_date(now);
+		d.setCreate_date(now);
 	}
 
 }

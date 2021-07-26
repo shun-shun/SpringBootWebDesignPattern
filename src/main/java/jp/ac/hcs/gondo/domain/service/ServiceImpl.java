@@ -1,62 +1,72 @@
 package jp.ac.hcs.gondo.domain.service;
 
-abstract class ServiceImpl<D,E,F> implements Service<D,E,F>{
+abstract class ServiceImpl<D,E> implements Service<D,E>{
 
 	@Override
 	public E getList() {
 		E e = fetch();
-		e = encode(e);
+		entityDecode(e);
 		return e;
 	}
-
-	/** データの取得 */
-	protected abstract E fetch();
-
-	/** 画面表示のためのエンコード */
-	protected abstract E encode(E e);
 
 	@Override
-	public E select(int id) {
-		E e = lookup(id);
-		e = encode(e);
-		return e;
+	public D select(String id, String userId) {
+		D d;
+		try {
+			int i = Integer.parseInt(id);
+			d = lookup(i, userId);
+			dataDecode(d);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			d = null;
+		}
+		return d;
 	}
-
-	/** IDでの検索 */
-	protected abstract E lookup(int id);
 
 	@Override
 	public E select(String userId) {
 		E e = lookup(userId);
-		e = encode(e);
+		entityDecode(e);
 		return e;
 	}
-
-
-	/** ユーザIDでの検索 */
-	protected abstract E lookup(String userId);
 
 	@Override
 	public E search(String keyword) {
 		E e = find(keyword);
-		e = encode(e);
+		entityDecode(e);
 		return e;
 	}
 
-	/** キーワードでの検索 */
-	protected abstract E find(String keyword);
-
 	@Override
-	public int create(F f, String userId) {
-		D d = refillToData(f, userId);
+	public int create(D d, String userId) {
+		dataEncode(d, userId);
 		createProcessing(d);
 		int count = add(d);
 		return count;
 	}
 
-	protected abstract D refillToData(F f, String userId);
+	protected abstract void dataEncode(D d, String userId);
+
+	/** データの取得 */
+	protected abstract E fetch();
+
+	/** 画面表示のためのエンコード */
+	protected abstract void entityDecode(E e);
+
+	/** 画面表示のためのエンコード */
+	protected abstract void dataDecode(D d);
+
+	/** IDでの検索 */
+	protected abstract D lookup(int id, String userId);
+
+	/** ユーザIDでの検索 */
+	protected abstract E lookup(String userId);
+
+	/** キーワードでの検索 */
+	protected abstract E find(String keyword);
 
 	protected abstract int add(D d);
 
 	protected abstract void createProcessing(D d);
+
 }

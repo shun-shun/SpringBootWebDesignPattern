@@ -1,9 +1,9 @@
 package jp.ac.hcs.gondo.domain.repository;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -17,7 +17,7 @@ public class TopRepository extends RepositoryImpl<TodoData, TodoEntity> {
 
 	private static final String SELECT_ALL_SQL = "SELECT * FROM t_report";
 
-	private static final String SELECT_BY_ID_SQL = "SELECT * FROM t_report WHERE id = ?";
+	private static final String SELECT_BY_ID_AND_USERID_SQL = "SELECT * FROM t_report WHERE id = ? and user_id = ?";
 
 	private static final String SELECT_BY_LIKE_SQL = "SELECT * FROM t_report WHERE title LIKE ? or contents LIKE ?";
 
@@ -27,6 +27,9 @@ public class TopRepository extends RepositoryImpl<TodoData, TodoEntity> {
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
+
+	@Autowired
+	ModelMapper modelMapper;
 
 	@Override
 	protected List<Map<String, Object>> selectAll() {
@@ -38,21 +41,17 @@ public class TopRepository extends RepositoryImpl<TodoData, TodoEntity> {
 	protected TodoEntity refillToData(List<Map<String, Object>> resultSet) {
 		TodoEntity entity = new TodoEntity();
 		for (Map<String, Object> m : resultSet) {
-			TodoData data = new TodoData();
-			data.setId((int) m.get("id"));
-			data.setTitle((String) m.get("title"));
+			TodoData data = modelMapper.map(m, TodoData.class);
+			// enumのみ手動で設定
 			data.setPriority(Priority.idOf((int) m.get("priority")));
-			data.setContents((String) m.get("contents"));
-			data.setUser_id((String) m.get("user_id"));
-			data.setCreate_date((Timestamp) m.get("create_date"));
 			entity.getList().add(data);
 		}
 		return entity;
 	}
 
 	@Override
-	protected List<Map<String, Object>> selectOne(int id) {
-		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(SELECT_BY_ID_SQL, id);
+	protected List<Map<String, Object>> selectOne(int id, String userId) {
+		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(SELECT_BY_ID_AND_USERID_SQL, id, userId);
 		return resultSet;
 	}
 
