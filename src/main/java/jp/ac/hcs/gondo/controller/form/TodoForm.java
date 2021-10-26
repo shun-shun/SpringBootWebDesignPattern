@@ -17,6 +17,8 @@ public class TodoForm {
 	private String title;
 
 	private Priority priority;
+	
+	private String tag;
 
 	@NotNull
 	@NotBlank

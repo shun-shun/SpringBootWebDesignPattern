@@ -2,6 +2,7 @@ package jp.ac.hcs.gondo.domain.repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class TopRepository extends RepositoryImpl<TodoData, TodoEntity> {
 
 	private static final String SELECT_BY_USER_ID_SQL = "SELECT * FROM t_report WHERE user_id = ?";
 
-	private static final String INSERT_SQL = "INSERT INTO t_report (id, title, priority, contents, user_id, create_date, update_date) VALUES ((SELECT MAX(id) + 1 FROM t_report), ?, ?, ?, ?, ?, ?)";
+	private static final String INSERT_SQL = "INSERT INTO t_report (id, title, priority, tag, contents, user_id, create_date, update_date) VALUES ((SELECT MAX(id) + 1 FROM t_report), ?, ?, ?, ?, ?, ?, ?)";
 
 	@Autowired
 	JdbcTemplate jdbcTemplate;
@@ -44,6 +45,7 @@ public class TopRepository extends RepositoryImpl<TodoData, TodoEntity> {
 			TodoData data = modelMapper.map(m, TodoData.class);
 			// enumのみ手動で設定
 			data.setPriority(Priority.idOf((int) m.get("priority")));
+			data.setTags( (String) m.get("tag") );
 			entity.getList().add(data);
 		}
 		return entity;
@@ -73,6 +75,7 @@ public class TopRepository extends RepositoryImpl<TodoData, TodoEntity> {
 		int count = jdbcTemplate.update(INSERT_SQL,
 				d.getTitle(),
 				d.getPriority().getId(),
+				d.getTag().stream().collect(Collectors.joining(",")),
 				d.getContents(),
 				d.getUser_id(),
 				d.getCreate_date(),

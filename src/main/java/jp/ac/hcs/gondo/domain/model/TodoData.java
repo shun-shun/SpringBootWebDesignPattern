@@ -1,6 +1,8 @@
 package jp.ac.hcs.gondo.domain.model;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.List;
 
 import jp.ac.hcs.gondo.common.Priority;
 import lombok.Data;
@@ -17,6 +19,9 @@ public class TodoData {
 	// 優先度
 	private Priority priority;
 	
+	// タグ
+	private List<String> tag;
+	
 	// 内容
 	private String contents;
 	
@@ -28,4 +33,9 @@ public class TodoData {
 	
 	// 更新日付
 	private Timestamp update_date;
+	
+	public void setTags(String tags) {
+		List<String> tag = Arrays.asList(tags.split(","));
+		setTag(tag);
+	}
 }

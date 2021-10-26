@@ -80,14 +80,16 @@
 								<label for="title">タイトル <span class="text-muted">※</span></label>
 								<input type="text" class="form-control" id="title" name="title"
 									placeholder="今日のTODO"
-									th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'" required>
-								<span class="text-danger" th:if="${#fields.hasErrors('title')}"
-									th:errors="*{title}">title error</span>
+									th:classappend="${#fields.hasErrors('title')} ? 'is-invalid'"
+									required> <span class="text-danger"
+									th:if="${#fields.hasErrors('title')}" th:errors="*{title}">title
+									error</span>
 							</div>
 							<div class="col-md-2 mb-3">
 								<label for="priority">優先度<span class="text-muted">※</span></label>
 								<select class="form-control" name="priority"
-									th:classappend="${#fields.hasErrors('priority')} ? 'is-invalid'" required>
+									th:classappend="${#fields.hasErrors('priority')} ? 'is-invalid'"
+									required>
 									<option th:each="priority : ${priorityList}"
 										th:value="${priority.name}" th:text="${priority.value}">
 									</option>
@@ -96,13 +98,29 @@
 									th:errors="*{priority}">priority error</span>
 							</div>
 						</div>
+						<div class="row">
+							<div class="col-md-11 mb-3">
+								<label for="contents">タグ<span class="text-muted"></span></label>
+								<input type="text" class="form-control" name="tag"
+									placeholder="TODOに関するタグを入力">
+							</div>
+
+							<div class="col-md-1 mb-3" id="tag">
+								<label for="priority">追加<span class="text-muted"></span></label>
+								<button class="btn btn-success" id="addTag">
+									<strong>+</strong>
+								</button>
+							</div>
+						</div>
 						<div class="mb-3">
 							<label for="contents">内容<span class="text-muted">※</span></label>
 							<textarea class="form-control" id="contents" name="contents"
 								rows="5"
-								th:classappend="${#fields.hasErrors('contents')} ? 'is-invalid'" required></textarea>
-							<span class="text-danger" th:if="${#fields.hasErrors('contents')}"
-								th:errors="*{contents}">contents error</span>
+								th:classappend="${#fields.hasErrors('contents')} ? 'is-invalid'"
+								required></textarea>
+							<span class="text-danger"
+								th:if="${#fields.hasErrors('contents')}" th:errors="*{contents}">contents
+								error</span>
 						</div>
 						<div class="input-group">
 							<button type="submit" class="btn btn-warning">作成</button>
@@ -125,6 +143,15 @@
 		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
 		crossorigin="anonymous"></script>
+	<script>
+	const hoge = document.querySelector("#addTag");
+	hoge.addEventListener("click", e => {
+		var tag = document.getElementById('tag');
+		var add_code = '<div class="col-md-11 mb-3"><input type="text" class="form-control" name="tag" placeholder="TODOに関するタグを入力"></div>';
+
+		tag.insertAdjacentHTML('afterend', add_code);
+	});
+	</script>
 
 </body>
 </html>
