@@ -1,4 +1,4 @@
-package jp.ac.hcs.gondo.domain.repository;
+package jp.ac.hcs.gondo.domain.repository.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +14,7 @@ import jp.ac.hcs.gondo.domain.entity.TodoEntity;
 import jp.ac.hcs.gondo.domain.model.TodoData;
 
 @Repository
-public class TopRepository extends RepositoryImpl<TodoData, TodoEntity> {
+class TopRepositoryImpl extends RepositoryImpl<TodoData, TodoEntity> {
 
 	private static final String SELECT_ALL_SQL = "SELECT * FROM t_report";
 
@@ -27,19 +27,19 @@ public class TopRepository extends RepositoryImpl<TodoData, TodoEntity> {
 	private static final String INSERT_SQL = "INSERT INTO t_report (id, title, priority, tag, contents, user_id, create_date, update_date) VALUES ((SELECT MAX(id) + 1 FROM t_report), ?, ?, ?, ?, ?, ?, ?)";
 
 	@Autowired
-	JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
-	ModelMapper modelMapper;
+	private ModelMapper modelMapper;
 
 	@Override
-	protected List<Map<String, Object>> selectAll() {
+	List<Map<String, Object>> selectAll() {
 		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(SELECT_ALL_SQL);
 		return resultSet;
 	}
 
 	@Override
-	protected TodoEntity refillToData(List<Map<String, Object>> resultSet) {
+	TodoEntity refillToData(List<Map<String, Object>> resultSet) {
 		TodoEntity entity = new TodoEntity();
 		for (Map<String, Object> m : resultSet) {
 			TodoData data = modelMapper.map(m, TodoData.class);
@@ -52,26 +52,26 @@ public class TopRepository extends RepositoryImpl<TodoData, TodoEntity> {
 	}
 
 	@Override
-	protected List<Map<String, Object>> selectOne(int id, String userId) {
+	List<Map<String, Object>> selectOne(int id, String userId) {
 		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(SELECT_BY_ID_AND_USERID_SQL, id, userId);
 		return resultSet;
 	}
 
 	@Override
-	protected List<Map<String, Object>> selectKeyword(String keyword) {
+	List<Map<String, Object>> selectKeyword(String keyword) {
 		keyword = "%" + keyword + "%";
 		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(SELECT_BY_LIKE_SQL, keyword, keyword);
 		return resultSet;
 	}
 
 	@Override
-	protected List<Map<String, Object>> selectUserId(String userId) {
+	List<Map<String, Object>> selectUserId(String userId) {
 		List<Map<String, Object>> resultSet = jdbcTemplate.queryForList(SELECT_BY_USER_ID_SQL, userId);
 		return resultSet;
 	}
 
 	@Override
-	protected int create(TodoData d) {
+	int create(TodoData d) {
 		int count = jdbcTemplate.update(INSERT_SQL,
 				d.getTitle(),
 				d.getPriority().getId(),

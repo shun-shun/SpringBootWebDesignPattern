@@ -73,6 +73,7 @@ public class TopController {
 			return input(form, principal, model);
 		}
 		TodoData todoData = modelMapper.map(form, TodoData.class);
+		todoData.setPriority(Priority.valueOf(form.getPriority()));
 		todoData.setTags(form.getTag());
 		int count = service.create(todoData, principal.getName());
 		if (count > 0) {

@@ -1,4 +1,6 @@
-package jp.ac.hcs.gondo.domain.service;
+package jp.ac.hcs.gondo.domain.service.impl;
+
+import jp.ac.hcs.gondo.domain.service.Service;
 
 abstract class ServiceImpl<D,E> implements Service<D,E>{
 
@@ -45,28 +47,28 @@ abstract class ServiceImpl<D,E> implements Service<D,E>{
 		return count;
 	}
 
-	protected abstract void dataEncode(D d, String userId);
+	abstract void dataEncode(D d, String userId);
 
 	/** データの取得 */
-	protected abstract E fetch();
+	abstract E fetch();
 
 	/** 画面表示のためのエンコード */
-	protected abstract void entityDecode(E e);
+	abstract void entityDecode(E e);
 
 	/** 画面表示のためのエンコード */
-	protected abstract void dataDecode(D d);
+	abstract void dataDecode(D d);
 
 	/** IDでの検索 */
-	protected abstract D lookup(int id, String userId);
+	abstract D lookup(int id, String userId);
 
 	/** ユーザIDでの検索 */
-	protected abstract E lookup(String userId);
+	abstract E lookup(String userId);
 
 	/** キーワードでの検索 */
-	protected abstract E find(String keyword);
+	abstract E find(String keyword);
 
-	protected abstract int add(D d);
+	abstract int add(D d);
 
-	protected abstract void createProcessing(D d);
+	abstract void createProcessing(D d);
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import jp.ac.hcs.gondo.common.Priority;
 import lombok.Data;
+import lombok.Setter;
 
 @Data
 public class TodoData {
@@ -20,6 +21,7 @@ public class TodoData {
 	private Priority priority;
 	
 	// タグ
+	@Setter
 	private List<String> tag;
 	
 	// 内容

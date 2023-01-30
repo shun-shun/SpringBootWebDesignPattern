@@ -1,9 +1,11 @@
-package jp.ac.hcs.gondo.domain.repository;
+package jp.ac.hcs.gondo.domain.repository.impl;
 
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.dao.DataAccessException;
+
+import jp.ac.hcs.gondo.domain.repository.Repository;
 
 abstract class RepositoryImpl<D,E> implements Repository<D,E>{
 
@@ -17,9 +19,9 @@ abstract class RepositoryImpl<D,E> implements Repository<D,E>{
 		return data;
 	}
 
-	protected abstract List<Map<String, Object>> selectAll();
+	abstract List<Map<String, Object>> selectAll();
 
-	protected abstract E refillToData(List<Map<String, Object>> resultSet);
+	abstract E refillToData(List<Map<String, Object>> resultSet);
 
 	/**
 	 * @inheritDoc
@@ -31,7 +33,7 @@ abstract class RepositoryImpl<D,E> implements Repository<D,E>{
 		return data;
 	}
 
-	protected abstract List<Map<String, Object>> selectOne(int id, String userId);
+	abstract List<Map<String, Object>> selectOne(int id, String userId);
 
 	/**
 	 * @inheritDoc
@@ -43,7 +45,7 @@ abstract class RepositoryImpl<D,E> implements Repository<D,E>{
 		return data;
 	}
 
-	protected abstract List<Map<String, Object>> selectKeyword(String keyword);
+	abstract List<Map<String, Object>> selectKeyword(String keyword);
 
 	/**
 	 * @inheritDoc
@@ -55,7 +57,7 @@ abstract class RepositoryImpl<D,E> implements Repository<D,E>{
 		return data;
 	}
 
-	protected abstract List<Map<String, Object>> selectUserId(String userId);
+	abstract List<Map<String, Object>> selectUserId(String userId);
 
 	/**
 	 * @inheritDoc
@@ -66,5 +68,5 @@ abstract class RepositoryImpl<D,E> implements Repository<D,E>{
 		return count;
 	}
 
-	protected abstract int create(D d);
+	abstract int create(D d);
 }
